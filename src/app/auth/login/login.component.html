@@ -1,13 +1,9 @@
 <router-outlet></router-outlet>
 <div class="flex justify-center items-center flex-col h-screen gap-8 bg-gray-100">
-  <h1 class="text-5xl"> Sign up </h1>
+  <h1 class="text-5xl"> Login </h1>
   <div class="flex flex-col gap-2 w-80">
     <mat-form-field appearance="fill">
       <mat-label> E-mail </mat-label>
-      <input matInput>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Username </mat-label>
       <input matInput>
     </mat-form-field>
     <mat-form-field appearance="fill">
@@ -17,9 +13,9 @@
         <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
       </button>
     </mat-form-field>
-    <a routerLink="/auth/login" class="justify-self-start self-start mt-2 text-blue-600 hover:underline">
-      <span> Login </span>
+    <a routerLink="/auth/signup" class="justify-self-start self-start mt-2 text-blue-600 hover:underline">
+      <span> Sign up </span>
     </a>
   </div>
-  <button mat-flat-button color="primary" class="w-80">Sign Up</button>
+  <button mat-flat-button color="primary" class="w-80">Login</button>
 </div>
