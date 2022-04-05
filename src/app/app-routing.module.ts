@@ -11,6 +11,10 @@ const routes: Routes = [
     path: '',   redirectTo: '/auth/login', pathMatch: 'full'
   },
   {
+    path: 'home',
+    loadChildren: () => import('src/app/content/content.module').then(m => m.ContentModule)
+  },
+  {
     path: '**',
     component: PageNotFoundComponent
   }
