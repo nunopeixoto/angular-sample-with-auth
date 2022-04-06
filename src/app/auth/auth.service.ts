@@ -1,15 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { LoginResponse } from './models/login-response';
+import { LoginResponseDto } from './dto/response/login-response.dto';
+import { RegisterRequestDto } from './dto/request/register-request.dto';
 
 @Injectable()
 export class AuthService {
 
     constructor(private http: HttpClient) { }
 
-    login(email: string, password: string): Observable<LoginResponse> {
-      return this.http.post<LoginResponse>('api/login', {email: email, password: password});
+    login(email: string, password: string): Observable<LoginResponseDto> {
+      return this.http.post<LoginResponseDto>('api/login', {email: email, password: password});
+    }
+
+    register(payload:RegisterRequestDto): Observable<LoginResponseDto> {
+      return this.http.post<LoginResponseDto>('api/register', payload);
     }
 
     public isAuthenticated(): boolean {
