@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AnimalsService } from '../animals.service';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  animals: any;
+  constructor(
+    private animalsService: AnimalsService
+  ) {}
 
   ngOnInit(): void {
+    this.animalsService.getAnimals().subscribe(data => {
+      this.animals = data;
+    })
   }
 
 }

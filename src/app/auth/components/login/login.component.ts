@@ -12,8 +12,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService,
-    private router: Router
+    private authService: AuthService
   ) {}
 
   loginForm = this.formBuilder.group({
@@ -26,11 +25,9 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.authService.login(this.loginForm.value.email, this.loginForm.value.password)
-      .subscribe((data: any) => {
-        localStorage.setItem('token', data.token);
-        this.router.navigate(['./home']);
-      });
+    this.authService.getCsrfCookie().subscribe(() => {
+      this.authService.login(this.loginForm.value.email, this.loginForm.value.password);
+    });
   }
 
   getErrorMessage(field: string) {

@@ -5,8 +5,10 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthModule } from './auth/auth.module';
 import { SharedModule } from './shared/shared.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClientXsrfModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ContentModule } from './content/content.module';
+import { AuthService } from './auth/auth.service';
+import { HttpXsrfInterceptor } from './http-xsrf.interceptor';
 
 @NgModule({
   declarations: [
@@ -16,12 +18,16 @@ import { ContentModule } from './content/content.module';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    HttpClientXsrfModule,
     AppRoutingModule,
     SharedModule,
     AuthModule,
     ContentModule
   ],
-  providers: [],
+  providers: [
+    AuthService,
+    { provide: HTTP_INTERCEPTORS, useClass: HttpXsrfInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

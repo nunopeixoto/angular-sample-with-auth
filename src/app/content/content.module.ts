@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomeComponent } from './home/home.component';
 import { ContentRoutingModule } from './content-routing.module';
+import { AnimalsService } from './animals.service';
 
 
 
@@ -12,6 +13,9 @@ import { ContentRoutingModule } from './content-routing.module';
   imports: [
     CommonModule,
     ContentRoutingModule
+  ],
+  providers: [
+    AnimalsService
   ]
 })
 export class ContentModule { }
