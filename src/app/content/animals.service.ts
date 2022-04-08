@@ -8,6 +8,6 @@ export class AnimalsService {
     constructor(private http: HttpClient) { }
 
     getAnimals() : Observable<any> {
-      return this.http.get<any>('http://localhost:8000/api/animals');
+      return this.http.get<any>('http://localhost:8000/api/animals', {withCredentials: true});
     }
 }

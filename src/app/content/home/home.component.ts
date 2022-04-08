@@ -6,14 +6,14 @@ import { AnimalsService } from '../animals.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
 
   animals: any;
   constructor(
     private animalsService: AnimalsService
   ) {}
 
-  ngOnInit(): void {
+  loadProtected(): void {
     this.animalsService.getAnimals().subscribe(data => {
       this.animals = data;
     })

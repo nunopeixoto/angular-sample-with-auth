@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -9,11 +10,10 @@ import {Router} from '@angular/router';
 export class HeaderComponent {
 
   constructor(
-    private router: Router
+    private authService: AuthService
   ) { }
 
   logout() : void {
-    document.cookie = 'logged_in=false; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-    this.router.navigate(['./auth/login']);
+    this.authService.logout();
   }
 }

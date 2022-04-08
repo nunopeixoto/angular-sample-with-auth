@@ -29,6 +29,11 @@ export class AuthService {
       })
     }
 
+    logout() : void {
+      document.cookie = 'logged_in=false; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+      this.router.navigate(['./auth/login']);
+    }
+
     register(payload:RegisterRequestDto): Observable<LoginResponseDto> {
       return this.http.post<LoginResponseDto>('api/register', payload);
     }

@@ -1,20 +1,36 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpXsrfTokenExtractor } from "@angular/common/http";
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpXsrfTokenExtractor } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, tap } from "rxjs";
+import { AuthService } from "./auth/auth.service";
 
 @Injectable()
 export class HttpXsrfInterceptor implements HttpInterceptor {
 
-  constructor(private tokenExtractor: HttpXsrfTokenExtractor) {
-  }
+  constructor(
+    private tokenExtractor: HttpXsrfTokenExtractor,
+    private authService: AuthService
+  ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const headerName = 'X-XSRF-TOKEN';
-    let token = this.tokenExtractor.getToken() as string;
+    const xsrfName = 'X-XSRF-TOKEN';
+    let xsrfValue = this.tokenExtractor.getToken() as string;
 
-    if (token !== null && !req.headers.has(headerName)) {
-      req = req.clone({ headers: req.headers.set(headerName, token) });
+    if (xsrfValue !== null && !req.headers.has(xsrfName)) {
+      req = req.clone({ headers: req.headers.set(xsrfName, xsrfValue) });
     }
-    return next.handle(req);
+
+    return next.handle(req).pipe( tap(() => {},
+      (err: any) => {
+      if (err instanceof HttpErrorResponse) {
+        if (err.status === 401) {
+          // toast session expired here
+          this.authService.logout();
+          return;
+        }
+
+        // other error handling might come here
+        return;
+      }
+    }));
   }
 }
