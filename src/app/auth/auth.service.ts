@@ -34,8 +34,12 @@ export class AuthService {
       this.router.navigate(['./auth/login']);
     }
 
-    register(payload:RegisterRequestDto): Observable<LoginResponseDto> {
-      return this.http.post<LoginResponseDto>('api/register', payload);
+    register(payload:RegisterRequestDto): void {
+      this.getCsrfCookie().subscribe(() => {
+        this.http.post<LoginResponseDto>('http://localhost:8000/api/register', payload, {withCredentials: true}).subscribe(() => {
+          this.router.navigate(['./auth/login']);
+        });
+      });
     }
 
     getCsrfCookie() : Observable<any> {

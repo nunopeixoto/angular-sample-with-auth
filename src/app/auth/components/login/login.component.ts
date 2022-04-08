@@ -21,9 +21,7 @@ export class LoginComponent {
   });
 
   onSubmit(): void {
-    this.authService.getCsrfCookie().subscribe(() => {
-      this.authService.login(this.loginForm.value.email, this.loginForm.value.password);
-    });
+    this.authService.login(this.loginForm.value.email, this.loginForm.value.password);
   }
 
   getErrorMessage(field: string) {

@@ -27,11 +27,7 @@ export class SignUpComponent {
   });
 
   onSubmit(): void {
-    this.authService.register(this.signUpForm.value)
-      .subscribe((data: LoginResponseDto) => {
-        localStorage.setItem('token', data.token);
-        this.router.navigate(['./home']);
-      });
+    this.authService.register(this.signUpForm.value);
   }
 
   getErrorMessage(field: string) : string {
