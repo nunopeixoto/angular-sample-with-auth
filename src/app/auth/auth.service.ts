@@ -14,24 +14,26 @@ export class AuthService {
     ) { }
 
     login(email: string, password: string): void {
-      this.http.post<LoginResponseDto>('http://localhost:8000/login', {email: email, password: password}, {withCredentials: true})
-        .subscribe({
-          complete: () => {
-            let d:Date = new Date();
-            d.setTime(d.getTime() + 1 * 24 * 60 * 60 * 1000);
-            let expires:string = `expires=${d.toUTCString()}`;
-            document.cookie = `logged_in=true; ${expires}`;
-            this.router.navigate(['./home']);
-          },
-          error: (e) => {
-            console.error(e)
-          }
-      })
+      this.getCsrfCookie().subscribe(() => {
+        this.http.post<LoginResponseDto>('http://localhost:8000/login', {email: email, password: password}, {withCredentials: true})
+          .subscribe({
+            complete: () => {
+              this.logUser();
+            },
+            error: (e) => {
+              console.error(e)
+            }
+        });
+      });
     }
 
     logout() : void {
-      document.cookie = 'logged_in=false; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-      this.router.navigate(['./auth/login']);
+      this.getCsrfCookie().subscribe(() => {
+        this.http.post<[]>('http://localhost:8000/api/logout', {}, {withCredentials: true}).subscribe(() => {
+          document.cookie = 'logged_in=false; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          this.router.navigate(['./auth/login']);
+        });
+      });
     }
 
     register(payload:RegisterRequestDto): void {
@@ -48,5 +50,13 @@ export class AuthService {
 
     public isAuthenticated(): boolean {
       return document.cookie.includes('logged_in=true');
+    }
+
+    private logUser() : void {
+      let d:Date = new Date();
+      d.setTime(d.getTime() + 1 * 24 * 60 * 60 * 1000);
+      let expires:string = `expires=${d.toUTCString()}`;
+      document.cookie = `logged_in=true; ${expires}`;
+      this.router.navigate(['./home']);
     }
 }
