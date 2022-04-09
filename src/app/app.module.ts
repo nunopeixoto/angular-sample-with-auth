@@ -8,7 +8,7 @@ import { SharedModule } from './shared/shared.module';
 import { HttpClientModule, HttpClientXsrfModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ContentModule } from './content/content.module';
 import { AuthService } from './auth/auth.service';
-import { HttpXsrfInterceptor } from './http-xsrf.interceptor';
+import { HttpApiInterceptor } from './http-api.interceptor';
 
 @NgModule({
   declarations: [
@@ -26,7 +26,7 @@ import { HttpXsrfInterceptor } from './http-xsrf.interceptor';
   ],
   providers: [
     AuthService,
-    { provide: HTTP_INTERCEPTORS, useClass: HttpXsrfInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: HttpApiInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

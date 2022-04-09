@@ -16,7 +16,7 @@ export class AuthService {
 
     login(email: string, password: string): void {
       this.getCsrfCookie().subscribe(() => {
-        this.http.post<LoginResponseDto>(environment.apiUrl + '/login', {email: email, password: password}, {withCredentials: true})
+        this.http.post<LoginResponseDto>(environment.apiUrl + '/login', {email: email, password: password})
           .subscribe({
             complete: () => {
               this.logUser();
@@ -30,7 +30,7 @@ export class AuthService {
 
     logout() : void {
       this.getCsrfCookie().subscribe(() => {
-        this.http.post<[]>(environment.apiUrl + '/api/logout', {}, {withCredentials: true}).subscribe(() => {
+        this.http.post<[]>(environment.apiUrl + '/api/logout', {}).subscribe(() => {
           this.logoutUser();
         });
       });
@@ -38,14 +38,14 @@ export class AuthService {
 
     register(payload:RegisterRequestDto): void {
       this.getCsrfCookie().subscribe(() => {
-        this.http.post<LoginResponseDto>(environment.apiUrl + '/api/register', payload, {withCredentials: true}).subscribe(() => {
+        this.http.post<LoginResponseDto>(environment.apiUrl + '/api/register', payload).subscribe(() => {
           this.router.navigate(['./auth/login']);
         });
       });
     }
 
     getCsrfCookie() : Observable<any> {
-      return this.http.get<any>(environment.apiUrl + '/sanctum/csrf-cookie', {withCredentials: true});
+      return this.http.get<any>(environment.apiUrl + '/sanctum/csrf-cookie');
     }
 
     public isAuthenticated(): boolean {

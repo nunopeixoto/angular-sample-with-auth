@@ -4,7 +4,7 @@ import { Observable, tap } from "rxjs";
 import { AuthService } from "./auth/auth.service";
 
 @Injectable()
-export class HttpXsrfInterceptor implements HttpInterceptor {
+export class HttpApiInterceptor implements HttpInterceptor {
 
   constructor(
     private tokenExtractor: HttpXsrfTokenExtractor,
@@ -16,8 +16,14 @@ export class HttpXsrfInterceptor implements HttpInterceptor {
     let xsrfValue = this.tokenExtractor.getToken() as string;
 
     if (xsrfValue !== null && !req.headers.has(xsrfName)) {
-      req = req.clone({ headers: req.headers.set(xsrfName, xsrfValue) });
+      req = req.clone({
+        headers: req.headers.set(xsrfName, xsrfValue),
+      });
     }
+
+    req = req.clone({
+      withCredentials: true
+    });
 
     return next.handle(req).pipe( tap(() => {},
       (err: any) => {
