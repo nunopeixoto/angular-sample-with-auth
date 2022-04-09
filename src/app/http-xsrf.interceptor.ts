@@ -24,7 +24,7 @@ export class HttpXsrfInterceptor implements HttpInterceptor {
       if (err instanceof HttpErrorResponse) {
         if (err.status === 401) {
           // toast session expired here
-          this.authService.logout();
+          this.authService.logoutUser();
           return;
         }
 
